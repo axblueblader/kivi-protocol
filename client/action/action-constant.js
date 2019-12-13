@@ -1,5 +1,5 @@
 module.exports = {
-  ACTION: {
+  TYPE: {
     CONNECT: "connect",
     REGISTER: "register",
     LOGIN: "login"

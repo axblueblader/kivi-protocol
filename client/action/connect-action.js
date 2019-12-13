@@ -1,11 +1,11 @@
-const MessageConstant = require("../message/message-constant");
+const ActionConstant = require("./action-constant");
 const MessageBuilder = require("../message/message-builder");
 
-const ActionBuilder = require("./action-builder");
+const BaseAction = require("./base-action");
 
-exports.ConnectAction = class ConnectAction extends ActionBuilder {
+exports.ConnectAction = class ConnectAction extends BaseAction {
   constructor() {
-    super(MessageConstant.ACTION.CONNECT);
+    super(ActionConstant.TYPE.CONNECT);
   }
 
   ip(_ip) {
@@ -23,7 +23,8 @@ exports.ConnectAction = class ConnectAction extends ActionBuilder {
     return this;
   }
 
-  build() {
+  pubkey(_pubkey) {
+    this._pubkey = _pubkey;
     return this;
   }
 
@@ -33,7 +34,7 @@ exports.ConnectAction = class ConnectAction extends ActionBuilder {
     } else {
       this._message = new MessageBuilder()
         .action(this._action)
-        .data([this._ip, this._port, this._uuid])
+        .data([this._ip, this._port, this._uuid, this._pubkey])
         .build();
       return this._message;
     }
