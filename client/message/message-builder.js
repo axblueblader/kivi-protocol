@@ -1,3 +1,5 @@
+const Key = require("../key");
+
 class MessageBuilder {
   constructor() {
     this._action = undefined;
@@ -15,7 +17,7 @@ class MessageBuilder {
   }
 
   build() {
-    return this._action + " " + this._data.join(" ");
+    return Key.getSocketId() + " " + this._action + " " + this._data.join(" ");
   }
 }
 module.exports = MessageBuilder;

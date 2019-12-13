@@ -6,15 +6,18 @@ const Key = require("./key");
 Key.gen();
 
 const server = net.createServer(function(socket) {
+  console.log(`${socket.remoteAddress}:${socket.remotePort} has connected`);
   socket.on("data", function(chunk) {
     const msgStr = chunk.toString();
     console.log(msgStr);
-
-    const result = handleAction(msgStr);
+    const socketId = msgStr.split(" ", 1)[0];
+    const result = handleAction(msgStr, socketId);
     socket.write(result);
   });
-  socket.on("end", function(chunk) {
-    console.log("Disconnected");
+  socket.on("end", function() {
+    console.log(
+      `${socket.remoteAddress}:${socket.remotePort} has disconnected`
+    );
     socket.end;
   });
 });
