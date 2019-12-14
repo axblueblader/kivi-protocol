@@ -1,5 +1,5 @@
 const net = require("net");
-const handleAction = require("./action/action-handler");
+const handleAction = require("./handler/action-handler");
 
 const Key = require("./key");
 
@@ -10,9 +10,8 @@ const server = net.createServer(function(socket) {
   socket.on("data", function(chunk) {
     const msgStr = chunk.toString();
     console.log(msgStr);
-    const socketId = msgStr.split(" ", 1)[0];
-    const result = handleAction(msgStr, socketId);
-    socket.write(result);
+    const result = handleAction(msgStr);
+    socket.write(result.getMessage());
   });
   socket.on("end", function() {
     console.log(

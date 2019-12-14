@@ -2,7 +2,7 @@
   "name": "kivi-server",
   "version": "1.0.0",
   "description": "server for kivi protocol",
-  "main": "tcp-server.js",
+  "main": "kivi-server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

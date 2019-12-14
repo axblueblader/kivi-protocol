@@ -1,14 +1,14 @@
 const crypto = require("crypto");
 const uuidV1 = require("uuid/v1");
 
-class Key {
+class Credential {
   constructor() {
     this._publicKey = undefined;
     this._privateKey = undefined;
     this._socketId = undefined;
   }
 
-  gen() {
+  genKey() {
     if (!this._privateKey || !this._publicKey) {
       const { privateKey, publicKey } = crypto.generateKeyPairSync("rsa", {
         modulusLength: 2048,
@@ -24,7 +24,9 @@ class Key {
       this._privateKey = privateKey;
       this._publicKey = publicKey;
     }
+  }
 
+  genSocId() {
     if (!this._socketId) {
       this._socketId = uuidV1();
     }
@@ -43,4 +45,4 @@ class Key {
   decrypt(msg) {}
 }
 
-module.exports = new Key();
+module.exports = new Credential();

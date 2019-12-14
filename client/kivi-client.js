@@ -4,18 +4,17 @@ const { ConnectAction } = require("./action/connect-action");
 
 const client = new net.Socket();
 
-const encoder = require("./helper/encoder");
+const Credential = require("./credential");
 
-const Key = require("./key");
-
-Key.gen();
+Credential.genKey();
+Credential.genSocId();
 
 client.connect(1337, "127.0.0.1", function() {
   console.log("Connected");
   const action = new ConnectAction()
     .ip("127.0.0.1")
     .port("1337")
-    .pubkey(encoder.toBase64(Key.getPubKey()));
+    .pubKey(Credential.getPubKey());
 
   const msg = action.getMessage();
   client.write(msg);

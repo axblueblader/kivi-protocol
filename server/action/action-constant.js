@@ -3,6 +3,5 @@ module.exports = {
     CONNECT: "connect",
     REGISTER: "register",
     LOGIN: "login"
-  },
-  POSITION_IN_MSG: 1
+  }
 };
