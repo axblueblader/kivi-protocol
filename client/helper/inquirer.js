@@ -23,17 +23,17 @@ module.exports = {
       {
         name: "username",
         type: "input",
-        message: "Username: "
+        message: "username: "
       },
       {
         name: "password",
         type: "password",
-        message: "Password: "
+        message: "password: "
       },
       {
         name: "useEncrypt",
         type: "confirm",
-        message: "Encrypt register message?"
+        message: "encrypt register message?"
       }
     ];
     return inquirer.prompt(questions);

@@ -7,16 +7,42 @@ class ApiClient {
   constructor() {
     this._isConnected = false;
     this._client = new net.Socket();
+    this.deferedResolve = undefined;
+    this.deferedReject = undefined;
+    this.initSocket();
   }
 
-  // careful with "this"
-  resultPromise(resolve, reject) {
-    this._client.on("data", function(data) {
-      const actionResult = ActionResult.fromJson(JSON.parse(data));
-      resolve(actionResult);
+  initSocket() {
+    this._client.on("data", data => {
+      if (this.deferedResolve) {
+        const actionResult = ActionResult.fromJson(JSON.parse(data));
+        this.deferedResolve(actionResult);
+      }
+    });
+    this._client.on("end", () => {
+      if (this.deferedReject) {
+        this.deferedReject("Connection to server ended");
+      }
+    });
+    this._client.on("error", () => {
+      if (this.deferedReject) {
+        this.deferedReject("Server encountered error");
+      }
     });
   }
-  async connect(host, port) {
+
+  destructSocket() {
+    this._client.end();
+    this._client.destroy();
+  }
+  disconnect() {}
+
+  deferResultPromise(resolve, reject) {
+    this.deferedResolve = resolve;
+    this.deferedReject = reject;
+  }
+
+  connect(host, port) {
     this._client.connect(port, host, () => {
       this._isConnected = true;
 
@@ -28,12 +54,12 @@ class ApiClient {
       const msg = action.getMessage();
       this._client.write(msg);
     });
-    return await new Promise((resolve, reject) =>
-      this.resultPromise(resolve, reject)
+    return new Promise((resolve, reject) =>
+      this.deferResultPromise(resolve, reject)
     );
   }
 
-  async register(username, password, useEncrypt) {
+  register(username, password, useEncrypt) {
     if (!this._isConnected) {
       throw new Error("Not connected to server");
     }
@@ -44,8 +70,8 @@ class ApiClient {
 
     const msg = action.getMessage();
     this._client.write(msg);
-    return await new Promise((resolve, reject) =>
-      this.resultPromise(resolve, reject)
+    return new Promise((resolve, reject) =>
+      this.deferResultPromise(resolve, reject)
     );
   }
 }

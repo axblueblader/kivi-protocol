@@ -1,7 +1,3 @@
-const net = require("net");
-
-const client = new net.Socket();
-
 const Credential = require("./credential");
 
 const chalk = require("chalk");
@@ -10,6 +6,11 @@ const figlet = require("figlet");
 
 process.on("uncaughtException", function(err) {
   console.error(err);
+});
+
+process.on("unhandledRejection", (reason, p) => {
+  console.error("Unhandled Rejection at: Promise ", p, " reason: ", reason);
+  // application specific logging, throwing an error, or other logic here
 });
 
 clear();
@@ -25,6 +26,7 @@ const ActionConstant = require("./action/action-constant");
 
 const handleConnect = require("./handler/connect-handler");
 const handleRegister = require("./handler/register-handler");
+const ApiClient = require("./api-client");
 const main = async () => {
   while (1) {
     try {
@@ -38,12 +40,17 @@ const main = async () => {
         case ActionConstant.TYPE.REGISTER:
           await handleRegister(commandArgs);
           break;
+        case "exit":
+        case "quit":
+          console.log(chalk.yellowBright("Good bye!"));
+          ApiClient.destructSocket();
+          return;
         default:
           console.log(chalk.red("Invalid action"));
           break;
       }
     } catch (ex) {
-      console.log(chalk.red(ex.message));
+      console.log(chalk.red(ex));
     }
   }
 };

@@ -1,18 +1,19 @@
 // simple in-memory db to map username with user info
 
 class UserInfo {
-  username = undefined;
-  password = undefined;
-  online = undefined;
-  name = undefined;
-  date = undefined;
-  note = undefined;
-
-  constructor() {}
+  constructor() {
+    this.username = undefined;
+    this.password = undefined;
+    this.online = undefined;
+    this.name = undefined;
+    this.date = undefined;
+    this.note = undefined;
+  }
 }
 class UserDb {
-  database = {};
-  constructor() {}
+  constructor() {
+    this.database = {};
+  }
 
   find(username, option) {
     // clone into variable
@@ -51,3 +52,9 @@ class CheckUserOption {
     this.showAll = true;
   }
 }
+
+module.exports = {
+  UserDb: new UserDb(),
+  UserInfo: UserInfo,
+  CheckUserOption: CheckUserOption
+};
