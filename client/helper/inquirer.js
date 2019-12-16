@@ -17,5 +17,25 @@ module.exports = {
       }
     ];
     return inquirer.prompt(questions);
+  },
+  askRegister: () => {
+    const questions = [
+      {
+        name: "username",
+        type: "input",
+        message: "Username: "
+      },
+      {
+        name: "password",
+        type: "password",
+        message: "Password: "
+      },
+      {
+        name: "useEncrypt",
+        type: "confirm",
+        message: "Encrypt register message?"
+      }
+    ];
+    return inquirer.prompt(questions);
   }
 };
