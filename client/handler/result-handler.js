@@ -1,12 +1,11 @@
 const ActionConstant = require("../action/action-constant");
 const handleConnect = require("./connect.handler");
-const ActionMessage = require("../action/action-message");
-const encoder = require("../helper/encoder");
+const ActionResult = require("../action/action-result");
 module.exports = function(msg) {
-  const action = ActionMessage.fromJson(JSON.parse(msg));
+  const action = ActionResult.fromJson(JSON.parse(msg));
   console.log(action);
   switch (action.type) {
     case ActionConstant.TYPE.CONNECT:
-      return handleConnect(action.data, action.socketId);
+      return handleConnect(action);
   }
 };

@@ -2,9 +2,15 @@ const CommonConstant = require("./common-constant");
 const encoder = require("./encoder");
 module.exports = class Result {
   constructor() {
+    this.type = undefined;
     this.status = CommonConstant.STATUS.SUCCESS;
     this.data = {};
     this.message = undefined;
+  }
+
+  setType(type) {
+    this.type = type;
+    return this;
   }
 
   setStatus(status) {

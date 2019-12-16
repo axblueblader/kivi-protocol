@@ -7,12 +7,14 @@ Key.gen();
 
 const server = net.createServer(function(socket) {
   console.log(`${socket.remoteAddress}:${socket.remotePort} has connected`);
+
   socket.on("data", function(chunk) {
     const msgStr = chunk.toString();
-    console.log(msgStr);
+    console.log(`message from ${socket.remoteAddress}:${socket.remotePort}:`);
     const result = handleAction(msgStr);
     socket.write(result.getMessage());
   });
+
   socket.on("end", function() {
     console.log(
       `${socket.remoteAddress}:${socket.remotePort} has disconnected`

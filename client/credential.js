@@ -6,6 +6,7 @@ class Credential {
     this._publicKey = undefined;
     this._privateKey = undefined;
     this._socketId = undefined;
+    this._serverPubKey = undefined;
   }
 
   genKey() {
@@ -38,6 +39,14 @@ class Credential {
 
   getSocketId() {
     return this._socketId;
+  }
+
+  setServerPubKey(pubKey) {
+    this._serverPubKey = pubKey;
+  }
+
+  getServerPubKey(pubKey) {
+    return this._serverPubKey;
   }
 
   encrypt(msg) {}

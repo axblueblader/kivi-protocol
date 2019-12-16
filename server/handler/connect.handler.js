@@ -2,14 +2,15 @@ const Key = require("../key");
 
 const SocketKeyStore = require("../storage/socket-key-store");
 const ConnectAction = require("../action/connect-action");
-const encoder = require("../helper/encoder");
+const ActionConstant = require("../action/action-constant");
 
 const Result = require("../helper/result-builder");
 module.exports = function(actionData, socketId) {
   const data = ConnectAction.fromJson(actionData);
-  console.log(data);
   SocketKeyStore.putPubKey(socketId, data.pubKey);
   const pubKey = Key.getPubKey();
-  const result = new Result().setData({ pubKey: pubKey });
+  const result = new Result()
+    .setType(ActionConstant.TYPE.CONNECT)
+    .setData({ pubKey: pubKey });
   return result;
 };
