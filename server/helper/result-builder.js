@@ -5,7 +5,6 @@ module.exports = class Result {
     this.type = undefined;
     this.status = CommonConstant.STATUS.SUCCESS;
     this.data = {};
-    this.message = undefined;
   }
 
   setType(type) {

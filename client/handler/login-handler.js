@@ -4,9 +4,9 @@ const chalk = require("chalk");
 const inquirer = require("../helper/inquirer");
 const exceptionWrapper = require("../helper/exception-wrapper");
 module.exports = exceptionWrapper(async function(commandArgs) {
-  const { username, password, useEncrypt } = await inquirer.askRegister();
-  const result = await ProtocolClient.register(username, password, useEncrypt);
+  const { username, password } = await inquirer.askLogin();
+  const result = await ProtocolClient.login(username, password);
   if (result.status == CommonConstant.STATUS.SUCCESS) {
-    console.log(chalk.greenBright("Registration successful"));
+    console.log(chalk.greenBright("Login successful"));
   }
 });

@@ -20,13 +20,18 @@ console.log(
 );
 console.log(chalk.blueBright("Type in commands to perform actions"));
 console.log(chalk.blueBright("Try 'connect 127.0.0.1 1337' to get started"));
+console.log(chalk.blueBright("'register' to create account"));
+console.log(chalk.blueBright("'login' to login your account"));
+console.log(chalk.blueBright("'exit' or 'quit' to exit program"));
 
 const inquirer = require("./helper/inquirer");
 const ActionConstant = require("./action/action-constant");
 
 const handleConnect = require("./handler/connect-handler");
 const handleRegister = require("./handler/register-handler");
-const ApiClient = require("./api-client");
+const handleLogin = require("./handler/login-handler");
+
+const ProtocolClient = require("./protocol-client");
 const main = async () => {
   while (1) {
     try {
@@ -40,10 +45,13 @@ const main = async () => {
         case ActionConstant.TYPE.REGISTER:
           await handleRegister(commandArgs);
           break;
+        case ActionConstant.TYPE.LOGIN:
+          await handleLogin(commandArgs);
+          break;
         case "exit":
         case "quit":
           console.log(chalk.yellowBright("Good bye!"));
-          ApiClient.destructSocket();
+          ProtocolClient.destructSocket();
           return;
         default:
           console.log(chalk.red("Invalid action"));

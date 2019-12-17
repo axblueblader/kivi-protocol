@@ -12,6 +12,7 @@ const server = net.createServer(function(socket) {
     const msgStr = chunk.toString();
     console.log(`message from ${socket.remoteAddress}:${socket.remotePort}:`);
     const result = handleAction(msgStr);
+    console.log(result);
     socket.write(result.getMessage());
   });
 

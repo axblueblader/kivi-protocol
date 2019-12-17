@@ -1,9 +1,12 @@
 const net = require("net");
 const ActionResult = require("./action/action-result");
 const Credential = require("./credential");
+
 const { ConnectAction } = require("./action/connect-action");
 const { RegisterAction } = require("./action/register-action");
-class ApiClient {
+const { LoginAction } = require("./action/login-action");
+
+class ProtocolClient {
   constructor() {
     this._isConnected = false;
     this._client = new net.Socket();
@@ -74,6 +77,19 @@ class ApiClient {
       this.deferResultPromise(resolve, reject)
     );
   }
+
+  login(username, password) {
+    if (!this._isConnected) {
+      throw new Error("Not connected to server");
+    }
+    const action = new LoginAction().username(username).password(password);
+
+    const msg = action.getMessage();
+    this._client.write(msg);
+    return new Promise((resolve, reject) =>
+      this.deferResultPromise(resolve, reject)
+    );
+  }
 }
 
-module.exports = new ApiClient();
+module.exports = new ProtocolClient();

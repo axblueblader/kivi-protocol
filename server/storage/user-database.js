@@ -4,8 +4,9 @@ class UserInfo {
   constructor() {
     this.username = undefined;
     this.password = undefined;
-    this.online = undefined;
+    this.online = false;
     this.name = undefined;
+    // date of birth
     this.date = undefined;
     this.note = undefined;
   }
@@ -20,12 +21,11 @@ class UserDb {
     const userInfo = { ...this.database[username] };
 
     if (userInfo) {
-      delete userInfo.password;
-
-      if (option.showAll || option.exist) {
+      if (!option || option.showAll || option.exist) {
         return userInfo;
       }
 
+      if (!option.showPassword) delete userInfo.password;
       if (!option.showDate) delete userInfo.date;
       if (!option.showName) delete userInfo.name;
       if (!option.online) delete userInfo.online;
@@ -39,6 +39,12 @@ class UserDb {
 
   create(username, userInfo) {
     this.database[username] = userInfo;
+  }
+
+  update(username, userInfo) {
+    Object.keys(userInfo).map(key => {
+      this.database[username][key] = userInfo[key];
+    });
   }
 }
 

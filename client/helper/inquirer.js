@@ -37,5 +37,20 @@ module.exports = {
       }
     ];
     return inquirer.prompt(questions);
+  },
+  askLogin: () => {
+    const questions = [
+      {
+        name: "username",
+        type: "input",
+        message: "username: "
+      },
+      {
+        name: "password",
+        type: "password",
+        message: "password: "
+      }
+    ];
+    return inquirer.prompt(questions);
   }
 };
