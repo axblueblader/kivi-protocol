@@ -1,5 +1,5 @@
 const crypto = require("crypto");
-
+const cryptor = require("./helper/cryptor");
 class Key {
   constructor() {
     this._publicKey = undefined;
@@ -30,9 +30,17 @@ class Key {
     return this._publicKey;
   }
 
-  encrypt(msg) {}
+  getPriKey() {
+    return this._privateKey;
+  }
 
-  decrypt(msg) {}
+  encrypt(msg) {
+    return cryptor.encryptWithRSAPubKey(this._publicKey, msg);
+  }
+
+  decrypt(msg) {
+    return cryptor.decryptWithRSAPriKey(this._privateKey, msg);
+  }
 }
 
 module.exports = new Key();

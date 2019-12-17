@@ -1,5 +1,5 @@
 const CommonConstant = require("./common-constant");
-const encoder = require("./encoder");
+const encoder = require("./cryptor");
 module.exports = class Result {
   constructor() {
     this.type = undefined;
