@@ -1,7 +1,5 @@
 const Credential = require("../credential");
 
-const encoder = require("../helper/encoder");
-
 module.exports = class BaseAction {
   constructor(actionType) {
     this.socketId = Credential.getSocketId();

@@ -1,4 +1,5 @@
 const crypto = require("crypto");
+const cryptor = require("./helper/cryptor");
 const uuidV1 = require("uuid/v1");
 
 class Credential {
@@ -49,9 +50,13 @@ class Credential {
     return this._serverPubKey;
   }
 
-  encrypt(msg) {}
+  encrypt(msg) {
+    return cryptor.encryptWithRSAPubKey(this._serverPubKey, msg);
+  }
 
-  decrypt(msg) {}
+  decrypt(msg) {
+    return cryptor.decryptWithRSAPriKey(this._privateKey, msg);
+  }
 }
 
 module.exports = new Credential();

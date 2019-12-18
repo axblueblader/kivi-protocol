@@ -34,8 +34,8 @@ class Key {
     return this._privateKey;
   }
 
-  encrypt(msg) {
-    return cryptor.encryptWithRSAPubKey(this._publicKey, msg);
+  encrypt(msg, pubKey) {
+    return cryptor.encryptWithRSAPubKey(pubKey, msg);
   }
 
   decrypt(msg) {

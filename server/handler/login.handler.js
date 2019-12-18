@@ -9,6 +9,9 @@ const CommonConstant = require("../helper/common-constant");
 const Result = require("../helper/result-builder");
 module.exports = function(actionData, socketId) {
   let { username, password } = LoginAction.fromJson(actionData);
+
+  password = Key.decrypt(password);
+
   const userInfo = UserDb.find(username, { showPassword: true });
   let result;
   if (userInfo.password === password) {

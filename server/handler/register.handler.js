@@ -1,4 +1,5 @@
 const Key = require("../key");
+const cryptor = require("../helper/cryptor");
 
 const { UserDb, UserInfo } = require("../storage/user-database");
 const RegisterAction = require("../action/register-action");
@@ -8,7 +9,7 @@ const Result = require("../helper/result-builder");
 module.exports = function(actionData, socketId) {
   let { username, password, useEncrypt } = RegisterAction.fromJson(actionData);
   if (useEncrypt) {
-    password = "decrypt here";
+    password = Key.decrypt(password);
   }
   const userInfo = new UserInfo();
   userInfo.username = username;
