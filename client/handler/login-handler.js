@@ -11,6 +11,7 @@ module.exports = exceptionWrapper(async function(commandArgs) {
 
   const result = await ProtocolClient.login(username, password);
   if (result.status == CommonConstant.STATUS.SUCCESS) {
+    Credential.setCurrentUser(username);
     console.log(chalk.greenBright("Login successful"));
   }
 });

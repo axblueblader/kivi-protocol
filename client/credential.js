@@ -8,6 +8,7 @@ class Credential {
     this._privateKey = undefined;
     this._socketId = undefined;
     this._serverPubKey = undefined;
+    this._currentUser = undefined;
   }
 
   genKey() {
@@ -56,6 +57,14 @@ class Credential {
 
   decrypt(msg) {
     return cryptor.decryptWithRSAPriKey(this._privateKey, msg);
+  }
+
+  setCurrentUser(username) {
+    this._currentUser = username;
+  }
+
+  getCurrentUser() {
+    return this._currentUser;
   }
 }
 

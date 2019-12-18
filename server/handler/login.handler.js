@@ -17,7 +17,7 @@ module.exports = function(actionData, socketId) {
   if (userInfo.password === password) {
     userInfo.online = true;
     UserDb.update(username, userInfo);
-    SocketKeyStore.setUsername(socketId);
+    SocketKeyStore.setUsername(socketId, username);
 
     console.log(userInfo);
     result = new Result().setType(ActionConstant.TYPE.LOGIN).setData({});

@@ -30,6 +30,7 @@ const ActionConstant = require("./action/action-constant");
 const handleConnect = require("./handler/connect-handler");
 const handleRegister = require("./handler/register-handler");
 const handleLogin = require("./handler/login-handler");
+const handleChat = require("./handler/chat-handler");
 
 const ProtocolClient = require("./protocol-client");
 const main = async () => {
@@ -39,14 +40,17 @@ const main = async () => {
       const commandArgs = input.action.split(" ");
 
       switch (commandArgs[0]) {
-        case ActionConstant.TYPE.CONNECT:
+        case ActionConstant.COMMAND.CONNECT:
           await handleConnect(commandArgs);
           break;
-        case ActionConstant.TYPE.REGISTER:
+        case ActionConstant.COMMAND.REGISTER:
           await handleRegister(commandArgs);
           break;
-        case ActionConstant.TYPE.LOGIN:
+        case ActionConstant.COMMAND.LOGIN:
           await handleLogin(commandArgs);
+          break;
+        case ActionConstant.COMMAND.CHAT:
+          await handleChat(commandArgs);
           break;
         case "exit":
         case "quit":

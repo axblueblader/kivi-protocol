@@ -2,6 +2,8 @@ module.exports = {
   TYPE: {
     CONNECT: "connect",
     REGISTER: "register",
-    LOGIN: "login"
+    LOGIN: "login",
+    SEND: "send",
+    RECEIVE: "receive"
   }
 };

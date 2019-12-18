@@ -16,6 +16,24 @@ const server = net.createServer(function(socket) {
     socket.write(result.getMessage());
   });
 
+  // TODO: FOR TEST REMOVE LATER
+  setInterval(() => {
+    const msg = JSON.stringify({
+      type: "receive",
+      status: "success",
+      data: {
+        sender: "abc",
+        receiver: "123",
+        message: "message every 2s",
+        useEncrypt: false
+      }
+    });
+    console.log(msg);
+    if (socket.writable) {
+      socket.write(msg);
+    }
+  }, 2000);
+
   socket.on("end", function() {
     console.log(
       `${socket.remoteAddress}:${socket.remotePort} has disconnected`

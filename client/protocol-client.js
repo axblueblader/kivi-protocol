@@ -5,24 +5,30 @@ const Credential = require("./credential");
 const { ConnectAction } = require("./action/connect-action");
 const { RegisterAction } = require("./action/register-action");
 const { LoginAction } = require("./action/login-action");
-
+const { SendAction } = require("./action/send-action");
+const events = require("events");
 class ProtocolClient {
   constructor() {
     this._isConnected = false;
     this._client = new net.Socket();
     this.deferedResolve = undefined;
     this.deferedReject = undefined;
+    this.eventEmitter = new events.EventEmitter();
     this.initSocket();
   }
 
   initSocket() {
     this._client.on("data", data => {
+      const actionResult = ActionResult.fromJson(JSON.parse(data));
       if (this.deferedResolve) {
-        const actionResult = ActionResult.fromJson(JSON.parse(data));
         this.deferedResolve(actionResult);
+        this.deferedResolve = undefined;
+      } else {
+        this.eventEmitter.emit(actionResult.type, actionResult);
       }
     });
     this._client.on("end", () => {
+      this._isConnected = false;
       if (this.deferedReject) {
         this.deferedReject("Connection to server ended");
       }
@@ -89,6 +95,27 @@ class ProtocolClient {
     return new Promise((resolve, reject) =>
       this.deferResultPromise(resolve, reject)
     );
+  }
+
+  send(recievers, message, useEncrypt) {
+    if (!this._isConnected) {
+      throw new Error("Not connected to server");
+    }
+
+    const action = new SendAction()
+      .recievers(recievers)
+      .message(message)
+      .useEncrypt(useEncrypt);
+
+    const msg = action.getMessage();
+    this._client.write(msg);
+    return new Promise((resolve, reject) =>
+      this.deferResultPromise(resolve, reject)
+    );
+  }
+
+  event() {
+    return this.eventEmitter;
   }
 }
 

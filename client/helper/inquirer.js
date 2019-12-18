@@ -1,6 +1,7 @@
 const inquirer = require("inquirer");
 
 module.exports = {
+  Inquirer: inquirer,
   askAction: () => {
     const questions = [
       {
@@ -49,6 +50,31 @@ module.exports = {
         name: "password",
         type: "password",
         message: "password: "
+      }
+    ];
+    return inquirer.prompt(questions);
+  },
+  askChat: () => {
+    const questions = [
+      {
+        name: "receivers",
+        type: "input",
+        message: "receivers: "
+      },
+      {
+        name: "useEncrypt",
+        type: "confirm",
+        message: "encrypt chat messages?"
+      }
+    ];
+    return inquirer.prompt(questions);
+  },
+  askMessage: () => {
+    const questions = [
+      {
+        name: "message",
+        type: "input",
+        message: "message: "
       }
     ];
     return inquirer.prompt(questions);

@@ -14,6 +14,14 @@ class UserInfo {
 class UserDb {
   constructor() {
     this.database = {};
+    this.testAccs();
+  }
+
+  testAccs() {
+    const tmp = new UserInfo();
+    tmp.username = "123";
+    tmp.password = "123";
+    this.create(tmp.username, tmp);
   }
 
   find(username, option) {
