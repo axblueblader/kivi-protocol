@@ -1,7 +1,6 @@
 class SocketKeyStore {
   constructor() {
     this._idInfoMap = {};
-    this._username = undefined;
   }
 
   putPubKey(socketId, pubKey) {
@@ -30,6 +29,28 @@ class SocketKeyStore {
       return undefined;
     }
     return this._idInfoMap[socketId].username;
+  }
+
+  getSocketId(username) {
+    let res = Object.keys(this._idInfoMap).filter(el => {
+      return this._idInfoMap[el].username == username;
+    });
+    console.log(res);
+    return res[0];
+  }
+
+  setSocket(socketId, socket) {
+    if (!this._idInfoMap[socketId]) {
+      this._idInfoMap[socketId] = {};
+    }
+    this._idInfoMap[socketId].socket = socket;
+  }
+
+  getSocket(socketId) {
+    if (!this._idInfoMap[socketId]) {
+      return undefined;
+    }
+    return this._idInfoMap[socketId].socket;
   }
 }
 

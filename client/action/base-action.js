@@ -5,15 +5,15 @@ module.exports = class BaseAction {
     this.socketId = Credential.getSocketId();
     this.type = actionType;
     this.data = {};
-    this.message = undefined;
+    this._message = undefined;
   }
 
   getMessage() {
-    if (this.message) {
-      return this.message;
+    if (this._message) {
+      return this._message;
     } else {
-      this.message = JSON.stringify(this);
-      return this.message;
+      this._message = JSON.stringify(this);
+      return this._message;
     }
   }
 };

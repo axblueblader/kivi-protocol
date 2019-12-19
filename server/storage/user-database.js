@@ -18,9 +18,13 @@ class UserDb {
   }
 
   testAccs() {
-    const tmp = new UserInfo();
+    let tmp = new UserInfo();
     tmp.username = "123";
     tmp.password = "123";
+    this.create(tmp.username, tmp);
+    tmp = new UserInfo();
+    tmp.username = "qwe";
+    tmp.password = "qwe";
     this.create(tmp.username, tmp);
   }
 

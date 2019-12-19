@@ -7,13 +7,14 @@ exports.SendAction = class SendAction extends BaseAction {
     super(ActionConstant.TYPE.SEND);
   }
 
-  recievers(_recievers) {
-    this.data.recievers = _recievers;
+  receivers(_receivers) {
+    this.data.receivers = _receivers;
     return this;
   }
 
   message(_message) {
     this.data.message = _message;
+    return this;
   }
 
   useEncrypt(_useEncrypt) {
