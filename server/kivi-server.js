@@ -3,6 +3,9 @@ const handleAction = require("./handler/action-handler");
 
 const Key = require("./key");
 
+const SocketKeyStore = require("./storage/socket-key-store");
+const { UserDb } = require("./storage/user-database");
+
 Key.gen();
 
 const server = net.createServer(function(socket) {
@@ -16,29 +19,20 @@ const server = net.createServer(function(socket) {
     socket.write(result.getMessage());
   });
 
-  // TODO: FOR TEST REMOVE LATER
-  // setInterval(() => {
-  //   const msg = JSON.stringify({
-  //     type: "receive",
-  //     status: "success",
-  //     data: {
-  //       date: new Date(),
-  //       sender: "abc",
-  //       receiver: "123",
-  //       message: "message every 2s",
-  //       useEncrypt: false
-  //     }
-  //   });
-  //   if (socket.writable) {
-  //     socket.write(msg);
-  //     console.log(msg);
-  //   }
-  // }, 2000);
-
   socket.on("end", function() {
     console.log(
       `${socket.remoteAddress}:${socket.remotePort} has disconnected`
     );
+    let socketId = SocketKeyStore.getSocketIdByHostPort(
+      socket.remoteAddress,
+      socket.remotePort
+    );
+    if (socketId) {
+      let username = SocketKeyStore.getUsername(socketId);
+      UserDb.update(username, { online: false });
+      SocketKeyStore.delete(socketId);
+      console.log(username + " has disconnected");
+    }
     socket.end;
   });
 });

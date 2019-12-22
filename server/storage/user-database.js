@@ -26,13 +26,16 @@ class UserDb {
     tmp.username = "qwe";
     tmp.password = "qwe";
     this.create(tmp.username, tmp);
+    tmp = new UserInfo();
+    tmp.username = "abc";
+    tmp.password = "abc";
+    this.create(tmp.username, tmp);
   }
 
   find(username, option) {
     // clone into variable
-    const userInfo = { ...this.database[username] };
-
-    if (userInfo) {
+    if (this.database[username]) {
+      const userInfo = { ...this.database[username] };
       if (!option || option.showAll || option.exist) {
         return userInfo;
       }
@@ -54,9 +57,11 @@ class UserDb {
   }
 
   update(username, userInfo) {
-    Object.keys(userInfo).map(key => {
-      this.database[username][key] = userInfo[key];
-    });
+    if (this.database[username]) {
+      Object.keys(userInfo).map(key => {
+        this.database[username][key] = userInfo[key];
+      });
+    }
   }
 }
 

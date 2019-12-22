@@ -23,20 +23,34 @@ module.exports = function(actionData, socketId) {
     };
   });
 
+  let offline = [];
+  let notFound = [];
   receiverInfos.forEach(receiver => {
-    if (useEncrypt) {
-      message = Key.encrypt(message, receiver.pubKey);
+    let usr = UserDb.find(receiver.username, { online: true });
+    if (!usr) {
+      notFound.push(receiver.username);
+      return;
     }
-    const res = new Result().setType(ActionConstant.TYPE.RECEIVE).setData({
-      date: new Date(),
-      sender: sender,
-      receiver: receiver.username,
-      message: message,
-      useEncrypt: useEncrypt
-    });
-    receiver.socket.write(res.getMessage());
+    if (usr.online) {
+      if (useEncrypt) {
+        message = Key.encrypt(message, receiver.pubKey);
+      }
+      const res = new Result().setType(ActionConstant.TYPE.RECEIVE).setData({
+        date: new Date(),
+        sender: sender,
+        receiver: receiver.username,
+        message: message,
+        useEncrypt: useEncrypt
+      });
+      receiver.socket.write(res.getMessage());
+    } else {
+      offline.push(receiver.username);
+    }
   });
 
-  const result = new Result().setType(ActionConstant.TYPE.SEND).setData({});
+  const result = new Result().setType(ActionConstant.TYPE.SEND).setData({
+    offline: offline,
+    notFound: notFound
+  });
   return result;
 };

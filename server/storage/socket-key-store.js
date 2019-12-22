@@ -35,7 +35,7 @@ class SocketKeyStore {
     let res = Object.keys(this._idInfoMap).filter(el => {
       return this._idInfoMap[el].username == username;
     });
-    console.log(res);
+    // console.log(res);
     return res[0];
   }
 
@@ -51,6 +51,21 @@ class SocketKeyStore {
       return undefined;
     }
     return this._idInfoMap[socketId].socket;
+  }
+
+  getSocketIdByHostPort(host, port) {
+    let res = Object.keys(this._idInfoMap).filter(el => {
+      return (
+        this._idInfoMap[el].socket.remoteAddress == host &&
+        this._idInfoMap[el].socket.remotePort == port
+      );
+    });
+    // console.log(res);
+    return res[0];
+  }
+
+  delete(socketId) {
+    delete this._idInfoMap[socketId];
   }
 }
 
