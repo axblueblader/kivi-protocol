@@ -102,6 +102,10 @@ class ProtocolClient {
       throw new Error("Not connected to server");
     }
 
+    if (useEncrypt) {
+      message = Credential.encrypt(message);
+    }
+
     const action = new SendAction()
       .receivers(receivers)
       .message(message)

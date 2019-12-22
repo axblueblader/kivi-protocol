@@ -36,6 +36,9 @@ module.exports = exceptionWrapper(async function(commandArgs) {
         // message is from person you are chatting with
         receivers.includes(sender)
       ) {
+        if (useEncrypt) {
+          message = Credential.decrypt(message);
+        }
         messageLog.push({
           date: new Date(date).toLocaleTimeString(),
           sender: sender,

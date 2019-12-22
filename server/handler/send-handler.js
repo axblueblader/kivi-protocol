@@ -24,6 +24,9 @@ module.exports = function(actionData, socketId) {
   });
 
   receiverInfos.forEach(receiver => {
+    if (useEncrypt) {
+      message = Key.encrypt(message, receiver.pubKey);
+    }
     const res = new Result().setType(ActionConstant.TYPE.RECEIVE).setData({
       date: new Date(),
       sender: sender,
