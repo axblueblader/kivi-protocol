@@ -4,7 +4,7 @@
   "description": "client for kivi protocol",
   "main": "kivi-client.js",
   "scripts": {
-    "start": "node kivi-client.js",
+    "start": "node --no-warnings kivi-client.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

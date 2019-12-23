@@ -11,10 +11,10 @@ Key.gen();
 const server = net.createServer(function(socket) {
   console.log(`${socket.remoteAddress}:${socket.remotePort} has connected`);
 
-  socket.on("data", function(chunk) {
+  socket.on("data", async function(chunk) {
     const msgStr = chunk.toString();
     console.log(`message from ${socket.remoteAddress}:${socket.remotePort}:`);
-    const result = handleAction(msgStr, socket);
+    const result = await handleAction(msgStr, socket);
     console.log(result);
     socket.write(result.getMessage());
   });

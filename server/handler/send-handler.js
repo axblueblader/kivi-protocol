@@ -32,14 +32,15 @@ module.exports = function(actionData, socketId) {
       return;
     }
     if (usr.online) {
+      let sendMsg = message;
       if (useEncrypt) {
-        message = Key.encrypt(message, receiver.pubKey);
+        sendMsg = Key.encrypt(message, receiver.pubKey);
       }
       const res = new Result().setType(ActionConstant.TYPE.RECEIVE).setData({
         date: new Date(),
         sender: sender,
         receiver: receiver.username,
-        message: message,
+        message: sendMsg,
         useEncrypt: useEncrypt
       });
       receiver.socket.write(res.getMessage());

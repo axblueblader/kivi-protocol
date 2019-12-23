@@ -1,12 +1,13 @@
 const ActionConstant = require("../action/action-constant");
 const ActionMessage = require("../action/action-message");
 
-const handleConnect = require("./connect.handler");
-const handleRegister = require("./register.handler");
-const handleLogin = require("./login.handler");
+const handleConnect = require("./connect-handler");
+const handleRegister = require("./register-handler");
+const handleLogin = require("./login-handler");
 const handleSend = require("./send-handler");
+const handleUpload = require("./upload-handler");
 
-module.exports = function(msg, socket) {
+module.exports = async function(msg, socket) {
   const action = ActionMessage.fromJson(JSON.parse(msg));
   console.log(action);
   switch (action.type) {
@@ -18,5 +19,7 @@ module.exports = function(msg, socket) {
       return handleLogin(action.data, action.socketId);
     case ActionConstant.TYPE.SEND:
       return handleSend(action.data, action.socketId);
+    case ActionConstant.TYPE.UPLOAD:
+      return handleUpload(action.data, action.socketId);
   }
 };

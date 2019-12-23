@@ -31,13 +31,14 @@ const handleConnect = require("./handler/connect-handler");
 const handleRegister = require("./handler/register-handler");
 const handleLogin = require("./handler/login-handler");
 const handleChat = require("./handler/chat-handler");
+const handleUpload = require("./handler/upload-handler");
 
 const ProtocolClient = require("./protocol-client");
 const main = async () => {
   while (1) {
     try {
-      const input = await inquirer.askAction();
-      const commandArgs = input.action.split(" ");
+      const input = await inquirer.askCommand();
+      const commandArgs = input.command.split(" ");
 
       switch (commandArgs[0]) {
         case ActionConstant.COMMAND.CONNECT:
@@ -52,13 +53,18 @@ const main = async () => {
         case ActionConstant.COMMAND.CHAT:
           await handleChat(commandArgs);
           break;
+        case ActionConstant.COMMAND.UPLOAD:
+          await handleUpload(commandArgs);
+          break;
         case "exit":
         case "quit":
           console.log(chalk.yellowBright("Good bye!"));
+
           ProtocolClient.destructSocket();
+
           return;
         default:
-          console.log(chalk.red("Invalid action"));
+          console.log(chalk.red("Invalid command"));
           break;
       }
     } catch (ex) {

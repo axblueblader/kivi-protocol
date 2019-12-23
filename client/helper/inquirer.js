@@ -2,12 +2,12 @@ const inquirer = require("inquirer");
 
 module.exports = {
   Inquirer: inquirer,
-  askAction: () => {
+  askCommand: () => {
     const questions = [
       {
-        name: "action",
+        name: "command",
         type: "input",
-        message: "action: ",
+        message: "command: ",
         validate: function(value) {
           if (value.length) {
             return true;

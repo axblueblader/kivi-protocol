@@ -6,6 +6,8 @@ const { ConnectAction } = require("./action/connect-action");
 const { RegisterAction } = require("./action/register-action");
 const { LoginAction } = require("./action/login-action");
 const { SendAction } = require("./action/send-action");
+const { UploadAction } = require("./action/upload-action");
+
 const events = require("events");
 class ProtocolClient {
   constructor() {
@@ -15,6 +17,7 @@ class ProtocolClient {
     this.deferedReject = undefined;
     this.eventEmitter = new events.EventEmitter();
     this.initSocket();
+    this.timeOut = 60000;
   }
 
   initSocket() {
@@ -49,6 +52,9 @@ class ProtocolClient {
   deferResultPromise(resolve, reject) {
     this.deferedResolve = resolve;
     this.deferedReject = reject;
+    setTimeout(() => {
+      this.deferedReject("Action has timed out");
+    }, this.timeOut);
   }
 
   connect(host, port) {
@@ -120,6 +126,27 @@ class ProtocolClient {
 
   event() {
     return this.eventEmitter;
+  }
+
+  upload(filePath, content, useEncrypt) {
+    if (!this._isConnected) {
+      throw new Error("Not connected to server");
+    }
+
+    if (useEncrypt) {
+      message = Credential.encrypt(message);
+    }
+
+    const action = new UploadAction()
+      .filePath(filePath)
+      .content(content)
+      .useEncrypt(useEncrypt);
+
+    const msg = action.getMessage();
+    this._client.write(msg);
+    return new Promise((resolve, reject) =>
+      this.deferResultPromise(resolve, reject)
+    );
   }
 }
 

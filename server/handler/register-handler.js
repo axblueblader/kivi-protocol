@@ -1,5 +1,4 @@
 const Key = require("../key");
-const cryptor = require("../helper/cryptor");
 
 const { UserDb, UserInfo } = require("../storage/user-database");
 const RegisterAction = require("../action/register-action");
