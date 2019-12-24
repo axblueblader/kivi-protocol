@@ -106,3 +106,4 @@ dist
 # User uploaded files
 server/storage/files
 client/files
+client/downloads

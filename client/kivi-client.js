@@ -32,10 +32,12 @@ const handleRegister = require("./handler/register-handler");
 const handleLogin = require("./handler/login-handler");
 const handleChat = require("./handler/chat-handler");
 const handleUpload = require("./handler/upload-handler");
+const handleDownload = require("./handler/download-handler");
 
 const ProtocolClient = require("./protocol-client");
 const main = async () => {
-  while (1) {
+  let run = true;
+  while (run) {
     try {
       const input = await inquirer.askCommand();
       const commandArgs = input.command.split(" ");
@@ -56,17 +58,22 @@ const main = async () => {
         case ActionConstant.COMMAND.UPLOAD:
           await handleUpload(commandArgs);
           break;
+        case ActionConstant.COMMAND.DOWNLOAD:
+          await handleDownload(commandArgs);
+          break;
         case "exit":
         case "quit":
+          ProtocolClient.destructSocket();
           console.log(chalk.yellowBright("Good bye!"));
 
-          ProtocolClient.destructSocket();
-
+          run = false;
           return;
         default:
           console.log(chalk.red("Invalid command"));
           break;
       }
+
+      if (!run) break;
     } catch (ex) {
       console.log(chalk.red(ex));
     }

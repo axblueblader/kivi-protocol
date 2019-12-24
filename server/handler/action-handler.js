@@ -6,6 +6,7 @@ const handleRegister = require("./register-handler");
 const handleLogin = require("./login-handler");
 const handleSend = require("./send-handler");
 const handleUpload = require("./upload-handler");
+const handleDownload = require("./download-handler");
 
 module.exports = async function(msg, socket) {
   const action = ActionMessage.fromJson(JSON.parse(msg));
@@ -21,5 +22,7 @@ module.exports = async function(msg, socket) {
       return handleSend(action.data, action.socketId);
     case ActionConstant.TYPE.UPLOAD:
       return handleUpload(action.data, action.socketId);
+    case ActionConstant.TYPE.DOWNLOAD:
+      return handleDownload(action.data, action.socketId);
   }
 };

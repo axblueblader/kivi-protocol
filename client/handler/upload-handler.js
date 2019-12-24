@@ -13,5 +13,6 @@ module.exports = exceptionWrapper(async function(commandArgs) {
     useEncrypt
   );
   if (result.status == CommonConstant.STATUS.SUCCESS) {
+    console.log(chalk.greenBright("Upload successful"));
   }
 });

@@ -7,6 +7,7 @@ const { RegisterAction } = require("./action/register-action");
 const { LoginAction } = require("./action/login-action");
 const { SendAction } = require("./action/send-action");
 const { UploadAction } = require("./action/upload-action");
+const { DownloadAction } = require("./action/download-action");
 
 const events = require("events");
 class ProtocolClient {
@@ -134,12 +135,28 @@ class ProtocolClient {
     }
 
     if (useEncrypt) {
-      message = Credential.encrypt(message);
+      content = Credential.encrypt(content);
     }
 
     const action = new UploadAction()
       .filePath(filePath)
       .content(content)
+      .useEncrypt(useEncrypt);
+
+    const msg = action.getMessage();
+    this._client.write(msg);
+    return new Promise((resolve, reject) =>
+      this.deferResultPromise(resolve, reject)
+    );
+  }
+
+  download(filePath, useEncrypt) {
+    if (!this._isConnected) {
+      throw new Error("Not connected to server");
+    }
+
+    const action = new DownloadAction()
+      .filePath(filePath)
       .useEncrypt(useEncrypt);
 
     const msg = action.getMessage();

@@ -5,13 +5,15 @@ module.exports = {
     LOGIN: "login",
     SEND: "send",
     RECEIVE: "receive",
-    UPLOAD: "upload"
+    UPLOAD: "upload",
+    DOWNLOAD: "download"
   },
   COMMAND: {
     CONNECT: "connect",
     REGISTER: "register",
     LOGIN: "login",
     CHAT: "chat",
-    UPLOAD: "upload"
+    UPLOAD: "upload",
+    DOWNLOAD: "download"
   }
 };
