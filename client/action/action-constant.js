@@ -6,7 +6,9 @@ module.exports = {
     SEND: "send",
     RECEIVE: "receive",
     UPLOAD: "upload",
-    DOWNLOAD: "download"
+    DOWNLOAD: "download",
+    INFO: "info",
+    UPDATE: "update"
   },
   COMMAND: {
     CONNECT: "connect",
@@ -14,6 +16,8 @@ module.exports = {
     LOGIN: "login",
     CHAT: "chat",
     UPLOAD: "upload",
-    DOWNLOAD: "download"
+    DOWNLOAD: "download",
+    CHECK_USER: "check",
+    UPDATE_INFO: "update"
   }
 };

@@ -78,5 +78,28 @@ module.exports = {
       }
     ];
     return inquirer.prompt(questions);
+  },
+  askInfo: () => {
+    const questions = [
+      {
+        name: "name",
+        type: "input",
+        message: "name: ",
+        default: ""
+      },
+      {
+        name: "date",
+        type: "input",
+        message: "date: ",
+        default: ""
+      },
+      {
+        name: "note",
+        type: "input",
+        message: "note: ",
+        default: ""
+      }
+    ];
+    return inquirer.prompt(questions);
   }
 };

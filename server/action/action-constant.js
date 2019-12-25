@@ -6,6 +6,8 @@ module.exports = {
     SEND: "send",
     RECEIVE: "receive",
     UPLOAD: "upload",
-    DOWNLOAD: "download"
+    DOWNLOAD: "download",
+    INFO: "info",
+    UPDATE: "update"
   }
 };

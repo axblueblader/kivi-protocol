@@ -8,6 +8,8 @@ const { LoginAction } = require("./action/login-action");
 const { SendAction } = require("./action/send-action");
 const { UploadAction } = require("./action/upload-action");
 const { DownloadAction } = require("./action/download-action");
+const { InfoAction, CheckUserOption } = require("./action/info-action");
+const { UpdateAction } = require("./action/update-action");
 
 const events = require("events");
 class ProtocolClient {
@@ -158,6 +160,42 @@ class ProtocolClient {
     const action = new DownloadAction()
       .filePath(filePath)
       .useEncrypt(useEncrypt);
+
+    const msg = action.getMessage();
+    this._client.write(msg);
+    return new Promise((resolve, reject) =>
+      this.deferResultPromise(resolve, reject)
+    );
+  }
+
+  info(username, options) {
+    if (!this._isConnected) {
+      throw new Error("Not connected to server");
+    }
+
+    let infoOptions = new CheckUserOption();
+    if (options.length > 0) {
+      infoOptions.showAll = false;
+      options.forEach(key => {
+        infoOptions[key] = true;
+      });
+    }
+
+    const action = new InfoAction().username(username).options(infoOptions);
+
+    const msg = action.getMessage();
+    this._client.write(msg);
+    return new Promise((resolve, reject) =>
+      this.deferResultPromise(resolve, reject)
+    );
+  }
+
+  update(info) {
+    if (!this._isConnected) {
+      throw new Error("Not connected to server");
+    }
+
+    const action = new UpdateAction().info(info);
 
     const msg = action.getMessage();
     this._client.write(msg);
