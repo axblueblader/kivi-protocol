@@ -27,17 +27,14 @@ module.exports = exceptionWrapper(async function(commandArgs) {
   let useEncrypt = false;
   content = content.toString();
 
-  setTimeout(() => {
-    status.stop();
-    deferedResolve();
-    console.log(chalk.red("Uploading timed out"));
-  }, 60000);
+  // setTimeout(() => {
+  //   status.stop();
+  //   deferedResolve();
+  //   console.log(chalk.red("Uploading timed out"));
+  // }, 60000);
 
   if (!commandArgs[2]) {
     commandArgs[2] = path.basename(commandArgs[1]);
   }
   const result = ProtocolClient.upload(commandArgs[2], content, useEncrypt);
-  await new Promise((resolve, reject) => {
-    deferedResolve = resolve;
-  });
 });
