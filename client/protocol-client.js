@@ -26,11 +26,10 @@ class ProtocolClient {
   initSocket() {
     this._client.on("data", data => {
       const actionResult = ActionResult.fromJson(JSON.parse(data));
+      this.eventEmitter.emit(actionResult.type, actionResult);
       if (this.deferedResolve) {
         this.deferedResolve(actionResult);
         this.deferedResolve = undefined;
-      } else {
-        this.eventEmitter.emit(actionResult.type, actionResult);
       }
     });
     this._client.on("end", () => {
@@ -43,6 +42,9 @@ class ProtocolClient {
       if (this.deferedReject) {
         this.deferedReject("Server encountered error");
       }
+    });
+    this._client.on("drain", () => {
+      console.log("drain");
     });
   }
 
@@ -140,13 +142,48 @@ class ProtocolClient {
       content = Credential.encrypt(content);
     }
 
-    const action = new UploadAction()
-      .filePath(filePath)
-      .content(content)
-      .useEncrypt(useEncrypt);
+    let size = 1000;
+    const numChunks = Math.ceil(content.length / size);
+    const chunks = new Array(numChunks);
+    for (let i = 0, o = 0; i < numChunks; ++i, o += size) {
+      let chunk = content.substr(o, size);
+      const action = new UploadAction()
+        .filePath(filePath)
+        .content(chunk)
+        .useEncrypt(useEncrypt)
+        .chunkNo(i);
 
-    const msg = action.getMessage();
-    this._client.write(msg);
+      if (i == numChunks - 1) {
+        action.done(true);
+      }
+      chunks[i] = action.getMessage();
+    }
+
+    function writeArray(arrayOfChunks, socket, callback) {
+      var i = 0;
+      function f() {
+        if (i >= arrayOfChunks.length) {
+          callback();
+        } else {
+          // console.log(socket.bufferSize);
+          // console.log(socket.bytesWritten);
+          socket.write(arrayOfChunks[i++] + "\n", f);
+        }
+      }
+      f();
+    }
+
+    function writeArray2(arrayOfChunks, socket, callback) {
+      for (let i = 0; i < arrayOfChunks.length; i++) {
+        const msg = arrayOfChunks[i];
+        console.log(socket.write(msg));
+      }
+      callback();
+    }
+
+    writeArray(chunks, this._client, () => {
+      console.log("Sent files content to server");
+    });
     return new Promise((resolve, reject) =>
       this.deferResultPromise(resolve, reject)
     );

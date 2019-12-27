@@ -15,7 +15,9 @@ function displayMsg(messageLog, receivers) {
   clear();
   console.log(chalk.greenBright("You are chatting with: ", receivers));
   console.log(chalk.blueBright("Type '\\q' to stop chatting"));
-  console.log(chalk.blueBright("Press 'enter' to refresh chat box"));
+  console.log(
+    chalk.blueBright("Press 'enter' to refresh chat box and send message")
+  );
   while (notiLog.length) {
     let el = notiLog.pop();
     console.log(

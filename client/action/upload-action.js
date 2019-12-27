@@ -21,4 +21,14 @@ exports.UploadAction = class UploadAction extends BaseAction {
     this.data.useEncrypt = _useEncrypt;
     return this;
   }
+
+  chunkNo(_chunkNo) {
+    this.data.chunkNo = _chunkNo;
+    return this;
+  }
+
+  done(_done) {
+    this.data.done = _done;
+    return this;
+  }
 };

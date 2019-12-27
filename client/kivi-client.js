@@ -24,7 +24,9 @@ console.log(chalk.blueBright("'register' to create account"));
 console.log(chalk.blueBright("'login' to login your account"));
 console.log(chalk.blueBright("'chat' to start chatting"));
 console.log(
-  chalk.blueBright("'upload <file_path> <file_name>' to upload a file")
+  chalk.blueBright(
+    "'upload <file_path> <file_name>' to upload a file from <file_path> and rename it to <file_name>"
+  )
 );
 console.log(chalk.blueBright("'download <file_name>' to download a file"));
 console.log(
