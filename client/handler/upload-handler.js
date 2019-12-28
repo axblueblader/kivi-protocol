@@ -11,14 +11,12 @@ const path = require("path");
 module.exports = exceptionWrapper(async function(commandArgs) {
   const status = new Spinner("Uploading file, please wait...");
   status.start();
-  let deferedResolve = undefined;
   ProtocolClient.event().on(ActionConstant.TYPE.UPLOAD, actionResult => {
     // console.log(actionResult);
     if (actionResult.status == CommonConstant.STATUS.SUCCESS) {
       if (actionResult.data.done) {
         console.log(chalk.greenBright("Uploading successful"));
         status.stop();
-        deferedResolve();
       }
     }
   });
